@@ -128,7 +128,10 @@ public class Drive {
      * Se encarga de subir un archivo, archivo(s) o carpetas seleccioandas con
      * el JFileChooser
      */
-    public void subirArchivos(){
+    public File[] subirArchivos(){
+        
+        //Arreglo de archivos.
+        File[] files ={};
         
         //JFileChooser para seleccionar archivos y carpetas
         JFileChooser jf = new JFileChooser();
@@ -141,7 +144,7 @@ public class Drive {
         if (r == JFileChooser.APPROVE_OPTION) {
             
             //Se obtiene el archivo(s) seleccionado
-            File[] files = jf.getSelectedFiles();
+            files = jf.getSelectedFiles();
             
             for( int i = 0; i<files.length; i++){
                 if( files[i].isFile() ){
@@ -152,6 +155,7 @@ public class Drive {
                 }
             }
         }
+        return files;
     }
     
     private static String rutaArch = "";
