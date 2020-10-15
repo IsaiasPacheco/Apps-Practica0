@@ -1,6 +1,7 @@
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.Arrays;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -63,10 +64,25 @@ public class UserInterface extends javax.swing.JFrame {
         bt_Folder.setIcon(btIfolderplus);
         //bt_File.setIcon(btIfile);
         raiz = new Node("Drive",true);
+        
+        drive = new Drive("localhost", 8000);
+        
+        Archivos archivos = drive.listRoot();
+        
         file_tree.setModel(new DefaultTreeModel(raiz));
         actual_node = raiz;
         
-        drive = new Drive("localhost", 8000);
+        System.out.println(Arrays.toString(archivos.getFiles()));
+        
+        for (int i = 0; i < archivos.getFiles().length; i++) {
+            if(archivos.getFiles()[i].isDirectory()){
+                makeCarpeta(archivos.getFiles()[i].getName());
+                actualizar();
+            }else{
+                makeArchivo(archivos.getFiles()[i].getName());
+                actualizar();
+            }
+        }
         
     }
 

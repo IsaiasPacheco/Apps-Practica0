@@ -1,7 +1,11 @@
 
 import java.net.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  *
@@ -57,13 +61,18 @@ public class SRecibe {
                             //Flujo de salida
                             ObjectOutputStream oos = new ObjectOutputStream(cl.getOutputStream());
 
-                            System.out.println("Se estan obteniendo los archivos");
+                            System.out.println("Se estan obteniendo los archivos...");
 
-                            File auxf = new File(ruta_archivos);
-                            File[] auxFiles = auxf.listFiles();
-
+                            Stream<Path> miStream = Files.walk(Paths.get(ruta_archivos));
+                            Object [] fi = miStream.toArray();
+                            
+                            File auxFiles[] = new File[fi.length];
+                            for (int i = 0; i < fi.length; i++) {
+                                auxFiles[i] = new File(fi[i].toString());
+                            }
+                            
                             Archivos archivos = new Archivos(auxFiles);
-
+                            
                             oos.writeObject(archivos);
                             oos.flush();
                             oos.close();
@@ -184,4 +193,12 @@ public class SRecibe {
             e.printStackTrace();
         }
     }//main
+    
+    public static void list(File file){
+        System.out.println(file.getName());
+        File []auxfile = file.listFiles();
+        for( File aux: auxfile ){
+            list(aux);
+        }
+    }
 }
